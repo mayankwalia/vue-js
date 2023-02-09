@@ -2749,6 +2749,394 @@ mysql> select date_format(birth,'%a - %b') from people
 
 mysql>
 
+
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> use book_shop;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_book_shop |
++---------------------+
+| books               |
+| contact             |
+| parent              |
+| people              |
+| products            |
+| states              |
++---------------------+
+6 rows in set (0.05 sec)
+
+mysql> insert into contact (name,phone) values ('sdsd','324232342')
+    -> ;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from contacts;
+ERROR 1146 (42S02): Table 'book_shop.contacts' doesn't exist
+mysql> select * from contact;
++------+-----------+
+| name | phone     |
++------+-----------+
+| sdsd | 324232342 |
++------+-----------+
+1 row in set (0.00 sec)
+
+mysql> insert into contact (name,phone) values ('timmy','324232342')
+    -> ;
+ERROR 1062 (23000): Duplicate entry '324232342' for key 'contact.phone'
+mysql> select * from contact;
++------+-----------+
+| name | phone     |
++------+-----------+
+| sdsd | 324232342 |
++------+-----------+
+1 row in set (0.00 sec)
+
+mysql> insert into contact (name,phone) values ('sdsd','3242323423')
+    -> ;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from contact;
++------+------------+
+| name | phone      |
++------+------------+
+| sdsd | 324232342  |
+| sdsd | 3242323423 |
++------+------------+
+2 rows in set (0.00 sec)
+
+mysql> create table users (name varchar(10), age int check (age>20));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into users values ('ram',34);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into users values ('ram',24);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into users values ('ram',14);
+ERROR 3819 (HY000): Check constraint 'users_chk_1' is violated.
+mysql> select * from users;
++------+------+
+| name | age  |
++------+------+
+| ram  |   34 |
+| ram  |   24 |
++------+------+
+2 rows in set (0.04 sec)
+
+mysql> create table palindrome(name varchar(10) check(name=reverse(name));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create table palindrome(name varchar(10) check(name=reverse(name)));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into palindrome values ('ramar')
+    -> ;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into palindrome values ('ram')
+    -> ;
+ERROR 3819 (HY000): Check constraint 'palindrome_chk_1' is violated.
+mysql> create table vote(age int not null constraint age_over_18 check (age>18));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> insert into vote values(13);
+ERROR 3819 (HY000): Check constraint 'age_over_18' is violated.
+mysql> insert into vote values(123);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into vote values(23);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from vote;
++-----+
+| age |
++-----+
+| 123 |
+|  23 |
++-----+
+2 rows in set (0.05 sec)
+
+mysql> ALTER TABLE vote ADD COLUMN (name varchar(20) NOT NULL);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc votes;
+ERROR 1146 (42S02): Table 'book_shop.votes' doesn't exist
+mysql> desc vote;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| age   | int         | NO   |     | NULL    |       |
+| name  | varchar(20) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.07 sec)
+
+mysql> select * from vote;
++-----+------+
+| age | name |
++-----+------+
+| 123 |      |
+|  23 |      |
++-----+------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE vote DROP COLUMN name;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from vote;
++-----+
+| age |
++-----+
+| 123 |
+|  23 |
++-----+
+2 rows in set (0.00 sec)
+
+mysql> desc vote;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| age   | int  | NO   |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+1 row in set (0.04 sec)
+
+mysql> ALTER TABLE vote ADD COLUMN (name varchar(20) NOT NULL DEFAULT 'ram');
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from vote;
++-----+------+
+| age | name |
++-----+------+
+| 123 | ram  |
+|  23 | ram  |
++-----+------+
+2 rows in set (0.03 sec)
+
+mysql> desc vote;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| age   | int         | NO   |     | NULL    |       |
+| name  | varchar(20) | NO   |     | ram     |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table vote add column (test int);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc vote;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| age   | int         | NO   |     | NULL    |       |
+| name  | varchar(20) | NO   |     | ram     |       |
+| test  | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> alter table vote drop column test;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc vote;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| age   | int         | NO   |     | NULL    |       |
+| name  | varchar(20) | NO   |     | ram     |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> rename table vote to votes;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> show tables();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '()' at line 1
+mysql> show tables;
++---------------------+
+| Tables_in_book_shop |
++---------------------+
+| books               |
+| contact             |
+| palindrome          |
+| parent              |
+| people              |
+| products            |
+| states              |
+| users               |
+| votes               |
++---------------------+
+9 rows in set (0.00 sec)
+
+mysql> select * from vote;
+ERROR 1146 (42S02): Table 'book_shop.vote' doesn't exist
+mysql> select * from votes;
++-----+------+
+| age | name |
++-----+------+
+| 123 | ram  |
+|  23 | ram  |
++-----+------+
+2 rows in set (0.00 sec)
+
+mysql> alter table rename votes to vote;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rename votes to vote' at line 1
+mysql> alter table votes rename to vote;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_book_shop |
++---------------------+
+| books               |
+| contact             |
+| palindrome          |
+| parent              |
+| people              |
+| products            |
+| states              |
+| users               |
+| vote                |
++---------------------+
+9 rows in set (0.00 sec)
+
+mysql> desc vote;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| age   | int         | NO   |     | NULL    |       |
+| name  | varchar(20) | NO   |     | ram     |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.03 sec)
+
+mysql> alter table vote rename column name to fullname;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc vote;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| age      | int         | NO   |     | NULL    |       |
+| fullname | varchar(20) | NO   |     | ram     |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table vote modify fullname varchar(5);
+Query OK, 2 rows affected (0.15 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc vote;
++----------+------------+------+-----+---------+-------+
+| Field    | Type       | Null | Key | Default | Extra |
++----------+------------+------+-----+---------+-------+
+| age      | int        | NO   |     | NULL    |       |
+| fullname | varchar(5) | YES  |     | NULL    |       |
++----------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table vote modify fullname varchar(2);
+ERROR 1265 (01000): Data truncated for column 'fullname' at row 1
+mysql> select * from vote;
++-----+----------+
+| age | fullname |
++-----+----------+
+| 123 | ram      |
+|  23 | ram      |
++-----+----------+
+2 rows in set (0.00 sec)
+
+mysql> desc vote;
++----------+------------+------+-----+---------+-------+
+| Field    | Type       | Null | Key | Default | Extra |
++----------+------------+------+-----+---------+-------+
+| age      | int        | NO   |     | NULL    |       |
+| fullname | varchar(5) | YES  |     | NULL    |       |
++----------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table vote chang fullname name varchar(10);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'chang fullname name varchar(10)' at line 1
+mysql> alter table vote change fullname name varchar(10);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc vote;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| age   | int         | NO   |     | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table vote add constraint 'age_is_positive' check (age>=0);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''age_is_positive' check (age>=0)' at line 1
+mysql> alter table vote add constraint age_is_positive check (age>=0);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc vote;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| age   | int         | NO   |     | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into vote values(-12,'da');
+ERROR 3819 (HY000): Check constraint 'age_is_positive' is violated.
+mysql> insert into vote values(12,'da');
+ERROR 3819 (HY000): Check constraint 'age_over_18' is violated.
+mysql> insert into vote values(1s2,'da');
+ERROR 1054 (42S22): Unknown column '1s2' in 'field list'
+mysql> insert into vote values(1232,'da');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into vote values(1232,'da');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from vote;
++------+------+
+| age  | name |
++------+------+
+|  123 | ram  |
+|   23 | ram  |
+| 1232 | da   |
+| 1232 | da   |
++------+------+
+4 rows in set (0.00 sec)
+
+mysql> alter table vote drop constraint age_over_18;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into vote values(12,'da');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into vote values(12,'da');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from vote;
++------+------+
+| age  | name |
++------+------+
+|  123 | ram  |
+|   23 | ram  |
+| 1232 | da   |
+| 1232 | da   |
+|   12 | da   |
+|   12 | da   |
++------+------+
+6 rows in set (0.00 sec)
+
+mysql>
+
 ```
 
 ### What is database?
