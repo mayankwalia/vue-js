@@ -3135,6 +3135,698 @@ mysql> select * from vote;
 +------+------+
 6 rows in set (0.00 sec)
 
+mysql> create table customers(id int auto_increment primary key, first_name varchar(20) , last_name varchar(20) , email varchar(40));
+ERROR 1046 (3D000): No database selected
+mysql> use book_shop;
+Database changed
+mysql> create table customers(id int auto_increment primary key, first_name varchar(20) , last_name varchar(20) , email varchar(40));
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> create table customers(id int auto_increment primary key, first_name varchar(20) , last_name varchar(20) , email varchar(40));
+ERROR 1050 (42S01): Table 'customers' already exists
+mysql> create table orders (id int auto_increment primary key, order_date DATE, maount DECIMAL(8,2), customer_id int, foreign key (customer_id) references customers);
+ERROR 1239 (42000): Incorrect foreign key definition for 'foreign key without name': Key reference and table reference don't match
+mysql> create table orders (id int auto_increment primary key, order_date DATE, maount DECIMAL(8,2), customer_id int, foreign key (customer_id) references customers(id));
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_book_shop |
++---------------------+
+| books               |
+| contact             |
+| customers           |
+| orders              |
+| palindrome          |
+| parent              |
+| people              |
+| products            |
+| states              |
+| users               |
+| vote                |
++---------------------+
+11 rows in set (0.04 sec)
+
+mysql> create database shop;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use shop;
+Database changed
+mysql> show database();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database()' at line 1
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| book_shop          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| shop               |
+| sys                |
+| tea_shop           |
+| test               |
+| world              |
++--------------------+
+10 rows in set (0.04 sec)
+
+mysql> select database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select database();
++------------+
+| database() |
++------------+
+| shop       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> CREATE TABLE customers (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     first_name VARCHAR(50),
+    ->     last_name VARCHAR(50),
+    ->     email VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE orders (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     order_date DATE,
+    ->     amount DECIMAL(8,2),
+    ->     customer_id INT,
+    ->     FOREIGN KEY (customer_id) REFERENCES customers(id)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql>
+mysql> INSERT INTO orders (order_date, amount, customer_id)
+    -> VALUES ('2016-02-10', 99.99, 1),
+    ->        ('2017-11-11', 35.50, 1),
+    ->        ('2014-12-12', 800.67, 2),
+    ->        ('2015-01-03', 12.50, 2),
+    ->        ('1999-04-11', 450.25, 5);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`shop`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`))
+mysql> INSERT INTO customers (first_name, last_name, email)
+    -> VALUES ('Boy', 'George', 'george@gmail.com'),
+    ->        ('George', 'Michael', 'gm@gmail.com'),
+    ->        ('David', 'Bowie', 'david@gmail.com'),
+    ->        ('Blue', 'Steele', 'blue@gmail.com'),
+    ->        ('Bette', 'Davis', 'bette@aol.com');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO orders (order_date, amount, customer_id)
+    -> VALUES ('2016-02-10', 99.99, 1),
+    ->        ('2017-11-11', 35.50, 1),
+    ->        ('2014-12-12', 800.67, 2),
+    ->        ('2015-01-03', 12.50, 2),
+    ->        ('1999-04-11', 450.25, 5);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++----------------+
+| Tables_in_shop |
++----------------+
+| customers      |
+| orders         |
++----------------+
+2 rows in set (0.05 sec)
+
+mysql> desc customers;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int         | NO   | PRI | NULL    | auto_increment |
+| first_name | varchar(50) | YES  |     | NULL    |                |
+| last_name  | varchar(50) | YES  |     | NULL    |                |
+| email      | varchar(50) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.04 sec)
+
+mysql> desc orders;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int          | NO   | PRI | NULL    | auto_increment |
+| order_date  | date         | YES  |     | NULL    |                |
+| amount      | decimal(8,2) | YES  |     | NULL    |                |
+| customer_id | int          | YES  | MUL | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----+------------+--------+-------------+
+| id | order_date | amount | customer_id |
++----+------------+--------+-------------+
+|  6 | 2016-02-10 |  99.99 |           1 |
+|  7 | 2017-11-11 |  35.50 |           1 |
+|  8 | 2014-12-12 | 800.67 |           2 |
+|  9 | 2015-01-03 |  12.50 |           2 |
+| 10 | 1999-04-11 | 450.25 |           5 |
++----+------------+--------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++----+------------+-----------+------------------+
+| id | first_name | last_name | email            |
++----+------------+-----------+------------------+
+|  1 | Boy        | George    | george@gmail.com |
+|  2 | George     | Michael   | gm@gmail.com     |
+|  3 | David      | Bowie     | david@gmail.com  |
+|  4 | Blue       | Steele    | blue@gmail.com   |
+|  5 | Bette      | Davis     | bette@aol.com    |
++----+------------+-----------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers join orders on customer.id=orders.customer_id ;
+ERROR 1054 (42S22): Unknown column 'customer.id' in 'on clause'
+mysql> select * from customers join orders ;
++----+------------+-----------+------------------+----+------------+--------+-------------+
+| id | first_name | last_name | email            | id | order_date | amount | customer_id |
++----+------------+-----------+------------------+----+------------+--------+-------------+
+|  5 | Bette      | Davis     | bette@aol.com    |  6 | 2016-02-10 |  99.99 |           1 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  6 | 2016-02-10 |  99.99 |           1 |
+|  3 | David      | Bowie     | david@gmail.com  |  6 | 2016-02-10 |  99.99 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |  6 | 2016-02-10 |  99.99 |           1 |
+|  1 | Boy        | George    | george@gmail.com |  6 | 2016-02-10 |  99.99 |           1 |
+|  5 | Bette      | Davis     | bette@aol.com    |  7 | 2017-11-11 |  35.50 |           1 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  7 | 2017-11-11 |  35.50 |           1 |
+|  3 | David      | Bowie     | david@gmail.com  |  7 | 2017-11-11 |  35.50 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |  7 | 2017-11-11 |  35.50 |           1 |
+|  1 | Boy        | George    | george@gmail.com |  7 | 2017-11-11 |  35.50 |           1 |
+|  5 | Bette      | Davis     | bette@aol.com    |  8 | 2014-12-12 | 800.67 |           2 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  8 | 2014-12-12 | 800.67 |           2 |
+|  3 | David      | Bowie     | david@gmail.com  |  8 | 2014-12-12 | 800.67 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |  8 | 2014-12-12 | 800.67 |           2 |
+|  1 | Boy        | George    | george@gmail.com |  8 | 2014-12-12 | 800.67 |           2 |
+|  5 | Bette      | Davis     | bette@aol.com    |  9 | 2015-01-03 |  12.50 |           2 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  9 | 2015-01-03 |  12.50 |           2 |
+|  3 | David      | Bowie     | david@gmail.com  |  9 | 2015-01-03 |  12.50 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |  9 | 2015-01-03 |  12.50 |           2 |
+|  1 | Boy        | George    | george@gmail.com |  9 | 2015-01-03 |  12.50 |           2 |
+|  5 | Bette      | Davis     | bette@aol.com    | 10 | 1999-04-11 | 450.25 |           5 |
+|  4 | Blue       | Steele    | blue@gmail.com   | 10 | 1999-04-11 | 450.25 |           5 |
+|  3 | David      | Bowie     | david@gmail.com  | 10 | 1999-04-11 | 450.25 |           5 |
+|  2 | George     | Michael   | gm@gmail.com     | 10 | 1999-04-11 | 450.25 |           5 |
+|  1 | Boy        | George    | george@gmail.com | 10 | 1999-04-11 | 450.25 |           5 |
++----+------------+-----------+------------------+----+------------+--------+-------------+
+25 rows in set (0.00 sec)
+
+mysql> select * from customers natural join orders ;
+Empty set (0.00 sec)
+
+mysql> select * from customers;
++----+------------+-----------+------------------+
+| id | first_name | last_name | email            |
++----+------------+-----------+------------------+
+|  1 | Boy        | George    | george@gmail.com |
+|  2 | George     | Michael   | gm@gmail.com     |
+|  3 | David      | Bowie     | david@gmail.com  |
+|  4 | Blue       | Steele    | blue@gmail.com   |
+|  5 | Bette      | Davis     | bette@aol.com    |
++----+------------+-----------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from orders where customer_id=(select id from customers where first_name='Boy' and last_name='George');
++----+------------+--------+-------------+
+| id | order_date | amount | customer_id |
++----+------------+--------+-------------+
+|  6 | 2016-02-10 |  99.99 |           1 |
+|  7 | 2017-11-11 |  35.50 |           1 |
++----+------------+--------+-------------+
+2 rows in set (0.02 sec)
+
+mysql> select amount, first_name,last_name from orders,curstomers where orders.customer_id=customers.id;
+ERROR 1146 (42S02): Table 'shop.curstomers' doesn't exist
+mysql> select amount, first_name,last_name from orders,customers where orders.customer_id=customers.id;
++--------+------------+-----------+
+| amount | first_name | last_name |
++--------+------------+-----------+
+|  99.99 | Boy        | George    |
+|  35.50 | Boy        | George    |
+| 800.67 | George     | Michael   |
+|  12.50 | George     | Michael   |
+| 450.25 | Bette      | Davis     |
++--------+------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers,orders
+    -> ;
++----+------------+-----------+------------------+----+------------+--------+-------------+
+| id | first_name | last_name | email            | id | order_date | amount | customer_id |
++----+------------+-----------+------------------+----+------------+--------+-------------+
+|  5 | Bette      | Davis     | bette@aol.com    |  6 | 2016-02-10 |  99.99 |           1 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  6 | 2016-02-10 |  99.99 |           1 |
+|  3 | David      | Bowie     | david@gmail.com  |  6 | 2016-02-10 |  99.99 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |  6 | 2016-02-10 |  99.99 |           1 |
+|  1 | Boy        | George    | george@gmail.com |  6 | 2016-02-10 |  99.99 |           1 |
+|  5 | Bette      | Davis     | bette@aol.com    |  7 | 2017-11-11 |  35.50 |           1 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  7 | 2017-11-11 |  35.50 |           1 |
+|  3 | David      | Bowie     | david@gmail.com  |  7 | 2017-11-11 |  35.50 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |  7 | 2017-11-11 |  35.50 |           1 |
+|  1 | Boy        | George    | george@gmail.com |  7 | 2017-11-11 |  35.50 |           1 |
+|  5 | Bette      | Davis     | bette@aol.com    |  8 | 2014-12-12 | 800.67 |           2 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  8 | 2014-12-12 | 800.67 |           2 |
+|  3 | David      | Bowie     | david@gmail.com  |  8 | 2014-12-12 | 800.67 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |  8 | 2014-12-12 | 800.67 |           2 |
+|  1 | Boy        | George    | george@gmail.com |  8 | 2014-12-12 | 800.67 |           2 |
+|  5 | Bette      | Davis     | bette@aol.com    |  9 | 2015-01-03 |  12.50 |           2 |
+|  4 | Blue       | Steele    | blue@gmail.com   |  9 | 2015-01-03 |  12.50 |           2 |
+|  3 | David      | Bowie     | david@gmail.com  |  9 | 2015-01-03 |  12.50 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |  9 | 2015-01-03 |  12.50 |           2 |
+|  1 | Boy        | George    | george@gmail.com |  9 | 2015-01-03 |  12.50 |           2 |
+|  5 | Bette      | Davis     | bette@aol.com    | 10 | 1999-04-11 | 450.25 |           5 |
+|  4 | Blue       | Steele    | blue@gmail.com   | 10 | 1999-04-11 | 450.25 |           5 |
+|  3 | David      | Bowie     | david@gmail.com  | 10 | 1999-04-11 | 450.25 |           5 |
+|  2 | George     | Michael   | gm@gmail.com     | 10 | 1999-04-11 | 450.25 |           5 |
+|  1 | Boy        | George    | george@gmail.com | 10 | 1999-04-11 | 450.25 |           5 |
++----+------------+-----------+------------------+----+------------+--------+-------------+
+25 rows in set (0.00 sec)
+
+mysql> select * from customers join orders on customer.id=orders.customer_id;
+ERROR 1054 (42S22): Unknown column 'customer.id' in 'on clause'
+mysql> select * from customers join orders on customers.id=orders.customer_id;
++----+------------+-----------+------------------+----+------------+--------+-------------+
+| id | first_name | last_name | email            | id | order_date | amount | customer_id |
++----+------------+-----------+------------------+----+------------+--------+-------------+
+|  1 | Boy        | George    | george@gmail.com |  6 | 2016-02-10 |  99.99 |           1 |
+|  1 | Boy        | George    | george@gmail.com |  7 | 2017-11-11 |  35.50 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |  8 | 2014-12-12 | 800.67 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |  9 | 2015-01-03 |  12.50 |           2 |
+|  5 | Bette      | Davis     | bette@aol.com    | 10 | 1999-04-11 | 450.25 |           5 |
++----+------------+-----------+------------------+----+------------+--------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,last_name,sum(amount) from customers join orders on orders.customer_id=customers.id group by first_name,last_name;
++------------+-----------+-------------+
+| first_name | last_name | sum(amount) |
++------------+-----------+-------------+
+| Boy        | George    |      135.49 |
+| George     | Michael   |      813.17 |
+| Bette      | Davis     |      450.25 |
++------------+-----------+-------------+
+3 rows in set (0.04 sec)
+
+mysql> select first_name,last_name,sum(amount) total from customers join orders on orders.customer_id=customers.id group by first_name,last_name order by total;
++------------+-----------+--------+
+| first_name | last_name | total  |
++------------+-----------+--------+
+| Boy        | George    | 135.49 |
+| Bette      | Davis     | 450.25 |
+| George     | Michael   | 813.17 |
++------------+-----------+--------+
+3 rows in set (0.03 sec)
+
+mysql> select first_name,last_name,sum(amount) as total from customers join orders on orders.customer_id=customers.id group by first_name,last_name order by total;
++------------+-----------+--------+
+| first_name | last_name | total  |
++------------+-----------+--------+
+| Boy        | George    | 135.49 |
+| Bette      | Davis     | 450.25 |
+| George     | Michael   | 813.17 |
++------------+-----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select first_name,last_name,sum(amount) as total from customers join orders on orders.customer_id=customers.id group by first_name,last_name order by total desc;
++------------+-----------+--------+
+| first_name | last_name | total  |
++------------+-----------+--------+
+| George     | Michael   | 813.17 |
+| Bette      | Davis     | 450.25 |
+| Boy        | George    | 135.49 |
++------------+-----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customers left join orders;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from customers left join orders on customers.id=orders.customer_id;
++----+------------+-----------+------------------+------+------------+--------+-------------+
+| id | first_name | last_name | email            | id   | order_date | amount | customer_id |
++----+------------+-----------+------------------+------+------------+--------+-------------+
+|  1 | Boy        | George    | george@gmail.com |    6 | 2016-02-10 |  99.99 |           1 |
+|  1 | Boy        | George    | george@gmail.com |    7 | 2017-11-11 |  35.50 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |    8 | 2014-12-12 | 800.67 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |    9 | 2015-01-03 |  12.50 |           2 |
+|  3 | David      | Bowie     | david@gmail.com  | NULL | NULL       |   NULL |        NULL |
+|  4 | Blue       | Steele    | blue@gmail.com   | NULL | NULL       |   NULL |        NULL |
+|  5 | Bette      | Davis     | bette@aol.com    |   10 | 1999-04-11 | 450.25 |           5 |
++----+------------+-----------+------------------+------+------------+--------+-------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from customers right join orders on customers.id=orders.customer_id;
++------+------------+-----------+------------------+----+------------+--------+-------------+
+| id   | first_name | last_name | email            | id | order_date | amount | customer_id |
++------+------------+-----------+------------------+----+------------+--------+-------------+
+|    1 | Boy        | George    | george@gmail.com |  6 | 2016-02-10 |  99.99 |           1 |
+|    1 | Boy        | George    | george@gmail.com |  7 | 2017-11-11 |  35.50 |           1 |
+|    2 | George     | Michael   | gm@gmail.com     |  8 | 2014-12-12 | 800.67 |           2 |
+|    2 | George     | Michael   | gm@gmail.com     |  9 | 2015-01-03 |  12.50 |           2 |
+|    5 | Bette      | Davis     | bette@aol.com    | 10 | 1999-04-11 | 450.25 |           5 |
++------+------------+-----------+------------------+----+------------+--------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,last_name,sum(amount) as total from customers left join orders on orders.customer_id=customers.id group by first_name,last_name order by total desc;
++------------+-----------+--------+
+| first_name | last_name | total  |
++------------+-----------+--------+
+| George     | Michael   | 813.17 |
+| Bette      | Davis     | 450.25 |
+| Boy        | George    | 135.49 |
+| David      | Bowie     |   NULL |
+| Blue       | Steele    |   NULL |
++------------+-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,last_name,sum(amount) as total from customers left join orders on orders.customer_id=customers.id group by first_name,last_name order by total desc;
++------------+-----------+--------+
+| first_name | last_name | total  |
++------------+-----------+--------+
+| George     | Michael   | 813.17 |
+| Bette      | Davis     | 450.25 |
+| Boy        | George    | 135.49 |
+| David      | Bowie     |   NULL |
+| Blue       | Steele    |   NULL |
++------------+-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,last_name,IFNULL(sum(amount),0) as total from customers left join orders on orders.customer_id=customers.id group by first_name,last_name order by total desc;
++------------+-----------+--------+
+| first_name | last_name | total  |
++------------+-----------+--------+
+| George     | Michael   | 813.17 |
+| Bette      | Davis     | 450.25 |
+| Boy        | George    | 135.49 |
+| David      | Bowie     |   0.00 |
+| Blue       | Steele    |   0.00 |
++------------+-----------+--------+
+5 rows in set (0.05 sec)
+
+mysql> delete from customers where first_name='George';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`shop`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`))
+mysql> select ucase('On delete cascade');
++----------------------------+
+| ucase('On delete cascade') |
++----------------------------+
+| ON DELETE CASCADE          |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> drop table customers;
+ERROR 3730 (HY000): Cannot drop table 'customers' referenced by a foreign key constraint 'orders_ibfk_1' on table 'orders'.
+mysql> drop table orders;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> drop table customers;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> CREATE TABLE customers (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     first_name VARCHAR(50),
+    ->     last_name VARCHAR(50),
+    ->     email VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> REATE TABLE orders (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     order_date DATE,
+    ->     amount DECIMAL(8 , 2 ),
+    ->     customer_id INT,
+    ->     FOREIGN KEY (customer_id)
+    ->         REFERENCES customers (id)
+    ->         ON DELETE CASCADE
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'REATE TABLE orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_date DATE,' at line 1
+mysql> CREATE TABLE orders (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     order_date DATE,
+    ->     amount DECIMAL(8 , 2 ),
+    ->     customer_id INT,
+    ->     FOREIGN KEY (customer_id)
+    ->         REFERENCES customers (id)
+    ->         ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> INSERT INTO students (first_name) VALUES
+    -> ('Caleb'), ('Samantha'), ('Raj'), ('Carlos'), ('Lisa');
+ERROR 1146 (42S02): Table 'shop.students' doesn't exist
+mysql>
+mysql> INSERT INTO papers (student_id, title, grade ) VALUES
+    -> (1, 'My First Book Report', 60),
+    -> (1, 'My Second Book Report', 75),
+    -> (2, 'Russian Lit Through The Ages', 94),
+    -> (2, 'De Montaigne and The Art of The Essay', 98),
+    -> (4, 'Borges and Magical Realism', 89);^C
+mysql> create table students(id int auto_increment primary key, first_name varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create table students(id int auto_increment primary key, first_name varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table papers(title varchar(20),grade int, student_id int, foreign key (student_id) references students(id) on delete cascade);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_shop |
++----------------+
+| customers      |
+| orders         |
+| papers         |
+| students       |
++----------------+
+4 rows in set (0.00 sec)
+
+mysql> desc students;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int         | NO   | PRI | NULL    | auto_increment |
+| first_name | varchar(20) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.05 sec)
+
+mysql> desc papers;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| title      | varchar(20) | YES  |     | NULL    |       |
+| grade      | int         | YES  |     | NULL    |       |
+| student_id | int         | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO students (first_name) VALUES
+    -> ('Caleb'), ('Samantha'), ('Raj'), ('Carlos'), ('Lisa');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO papers (student_id, title, grade ) VALUES
+    -> (1, 'My First Book Report', 60),
+    -> (1, 'My Second Book Report', 75),
+    -> (2, 'Russian Lit Through The Ages', 94),
+    -> (2, 'De Montaigne and The Art of The Essay', 98),
+    -> (4, 'Borges and Magical Realism', 89);
+ERROR 1406 (22001): Data too long for column 'title' at row 2
+mysql> alter table papers modify title varchar(100);
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> (2, 'De Montaigne and The Art of The Essay', 98),^C
+mysql> INSERT INTO papers (student_id, title, grade ) VALUES
+    -> (1, 'My First Book Report', 60),
+    -> (1, 'My Second Book Report', 75),
+    -> (2, 'Russian Lit Through The Ages', 94),
+    -> (2, 'De Montaigne and The Art of The Essay', 98),
+    -> (4, 'Borges and Magical Realism', 89);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++----+------------+
+| id | first_name |
++----+------------+
+|  1 | Caleb      |
+|  2 | Samantha   |
+|  3 | Raj        |
+|  4 | Carlos     |
+|  5 | Lisa       |
++----+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from papers;
++---------------------------------------+-------+------------+
+| title                                 | grade | student_id |
++---------------------------------------+-------+------------+
+| My First Book Report                  |    60 |          1 |
+| My Second Book Report                 |    75 |          1 |
+| Russian Lit Through The Ages          |    94 |          2 |
+| De Montaigne and The Art of The Essay |    98 |          2 |
+| Borges and Magical Realism            |    89 |          4 |
++---------------------------------------+-------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,title,grade from students join papers on student.id=papers.student_id;
+ERROR 1054 (42S22): Unknown column 'student.id' in 'on clause'
+mysql> select first_name,title,grade from students join papers on students.id=papers.student_id;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Caleb      | My First Book Report                  |    60 |
+| Caleb      | My Second Book Report                 |    75 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Carlos     | Borges and Magical Realism            |    89 |
++------------+---------------------------------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,title,grade from students join papers on students.id=papers.student_id order by grade desc;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Caleb      | My Second Book Report                 |    75 |
+| Caleb      | My First Book Report                  |    60 |
++------------+---------------------------------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,title,grade from students left join papers on students.id=papers.student_id order by grade desc;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Caleb      | My Second Book Report                 |    75 |
+| Caleb      | My First Book Report                  |    60 |
+| Raj        | NULL                                  |  NULL |
+| Lisa       | NULL                                  |  NULL |
++------------+---------------------------------------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select first_name,title,grade from students outer join papers on students.id=papers.student_id order by grade desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'outer join papers on students.id=papers.student_id order by grade desc' at line 1
+mysql> select first_name,title,grade from students inner join papers on students.id=papers.student_id order by grade desc;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Caleb      | My Second Book Report                 |    75 |
+| Caleb      | My First Book Report                  |    60 |
++------------+---------------------------------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,title,grade from students left join papers on students.id=papers.student_id order by title;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Raj        | NULL                                  |  NULL |
+| Lisa       | NULL                                  |  NULL |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Caleb      | My First Book Report                  |    60 |
+| Caleb      | My Second Book Report                 |    75 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
++------------+---------------------------------------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select first_name,title,grade from students left join papers on students.id=papers.student_id order by first_name;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Caleb      | My First Book Report                  |    60 |
+| Caleb      | My Second Book Report                 |    75 |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Lisa       | NULL                                  |  NULL |
+| Raj        | NULL                                  |  NULL |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
++------------+---------------------------------------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select first_name,title,grade from students left join papers on students.id=papers.student_id;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Caleb      | My First Book Report                  |    60 |
+| Caleb      | My Second Book Report                 |    75 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Raj        | NULL                                  |  NULL |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Lisa       | NULL                                  |  NULL |
++------------+---------------------------------------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select first_name,IFNULL(title,'MISSING'),IFNULL(grade,0) from students left join papers on students.id=papers.student_id;
++------------+---------------------------------------+-----------------+
+| first_name | IFNULL(title,'MISSING')               | IFNULL(grade,0) |
++------------+---------------------------------------+-----------------+
+| Caleb      | My First Book Report                  |              60 |
+| Caleb      | My Second Book Report                 |              75 |
+| Samantha   | Russian Lit Through The Ages          |              94 |
+| Samantha   | De Montaigne and The Art of The Essay |              98 |
+| Raj        | MISSING                               |               0 |
+| Carlos     | Borges and Magical Realism            |              89 |
+| Lisa       | MISSING                               |               0 |
++------------+---------------------------------------+-----------------+
+7 rows in set (0.00 sec)
+
+mysql> select first_name, IFNULL(avg(grade),0) as average  from students left join papers on students.id=papers.student_id;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'shop.students.first_name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select first_name, IFNULL(avg(grade),0) as average  from students left join papers on students.id=papers.student_id group by first_name;
++------------+---------+
+| first_name | average |
++------------+---------+
+| Caleb      | 67.5000 |
+| Samantha   | 96.0000 |
+| Raj        |  0.0000 |
+| Carlos     | 89.0000 |
+| Lisa       |  0.0000 |
++------------+---------+
+5 rows in set (0.05 sec)
+
+mysql> select first_name, IFNULL(avg(grade),0) as average  from students left join papers on students.id=papers.student_id group by first_name order byy average;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'byy average' at line 1
+mysql> select first_name, IFNULL(avg(grade),0) as average  from students left join papers on students.id=papers.student_id group by first_name order by average;
++------------+---------+
+| first_name | average |
++------------+---------+
+| Raj        |  0.0000 |
+| Lisa       |  0.0000 |
+| Caleb      | 67.5000 |
+| Carlos     | 89.0000 |
+| Samantha   | 96.0000 |
++------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name, IFNULL(avg(grade),0) as average  from students left join papers on students.id=papers.student_id group by first_name order by average desc;
++------------+---------+
+| first_name | average |
++------------+---------+
+| Samantha   | 96.0000 |
+| Carlos     | 89.0000 |
+| Caleb      | 67.5000 |
+| Raj        |  0.0000 |
+| Lisa       |  0.0000 |
++------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name, IFNULL(avg(grade),0) as average, case ifnull(avg(grade,0))>70 then 'passing' else 'failing' end as passing_status  from students left join papers on students.id=papers.student_id group by first_name order by average desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',0))>70 then 'passing' else 'failing' end as passing_status  from students left ' at line 1
 mysql>
 
 ```
