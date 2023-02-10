@@ -3828,7 +3828,59 @@ mysql> select first_name, IFNULL(avg(grade),0) as average  from students left jo
 mysql> select first_name, IFNULL(avg(grade),0) as average, case ifnull(avg(grade,0))>70 then 'passing' else 'failing' end as passing_status  from students left join papers on students.id=papers.student_id group by first_name order by average desc;
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',0))>70 then 'passing' else 'failing' end as passing_status  from students left ' at line 1
 mysql>
+-- show databases;
+-- use test;
+-- select database();
+-- select * from test;
+-- use tea_shop;
+-- show tables;
+-- show columns from menu;
+-- desc menu;
 
+-- create table pastries(name varchar(50), quantity int) ;
+-- show columns from pastries;
+-- describe pastries;
+-- drop table pastries;
+
+-- use tea_shop;
+-- select database();
+-- create table people(first_name VARCHAR(20), last_name VARCHAR(20), age INT);
+-- INSERT INTO people VALUES ('ram','mohan',34);
+-- select * from people;
+
+-- use tea_shop;
+-- show tables;
+-- create table people(first_name VARCHAR(20), last_name VARCHAR(20), age INT);
+-- INSERT INTO people VALUES ('ram','mohan',34);
+-- select * from people;
+
+
+use books;
+select first_name,last_name, count(rating) as 'COUNT', 
+IFNULL(min(rating),0) as 'MIN', IFNULL(max(rating),0) as 'MAX', 
+ROUND(IFNULL(avg(rating),0),2) as 'AVERAGE',
+CASE
+	WHEN count(rating)>0
+    THEN 'active'
+    ELSE 'inactive'
+END as 'status'
+from reviewers left join reviews 
+on reviews.reviewer_id=reviewers.id 
+group by first_name,last_name;
+
+select first_name,last_name, count(rating) as 'COUNT', 
+IFNULL(min(rating),0) as 'MIN', IFNULL(max(rating),0) as 'MAX', 
+ROUND(IFNULL(avg(rating),0),2) as 'AVERAGE',
+IF(count(rating)>0,'active','inactive') as 'status'
+from reviewers left join reviews 
+on reviews.reviewer_id=reviewers.id 
+group by first_name,last_name;
+
+select title, rating,concat(first_name,' ',last_name) as reviewer
+from series join reviews
+on series_id=series.id
+join reviewers 
+on reviewers.id=reviewer_id;
 ```
 
 ### What is database?
