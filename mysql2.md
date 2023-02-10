@@ -625,5 +625,1279 @@ mysql> select first_name,last_name, count(*) as 'COUNT', min(rating) as 'MIN', m
 +------------+-----------+-------+------+------+---------+
 6 rows in set (0.00 sec)
 
-mysql> select first_name,last_name, count(*) as 'COUNT', min(rating) as 'MIN', max(rating) as 'MAX', avg(rating) as 'AVERAGE' from reviewers join reviews on reviews.reviewer_id=reviewers.id group by first_name,last_name;
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| book_shop          |
+| books              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| shop               |
+| sys                |
+| tea_shop           |
+| test               |
+| world              |
++--------------------+
+11 rows in set (0.09 sec)
+
+mysql> use books;
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_books |
++-----------------+
+| reviewers       |
+| reviews         |
+| series          |
++-----------------+
+3 rows in set (0.05 sec)
+
+mysql> create view full_reviews as select title,released_year,rating,genre,first_name,last_name from reviews join series on series.id=reviews.series_id join reviewers on reviewers.id=reviews.reviewer_id;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_books |
++-----------------+
+| full_reviews    |
+| reviewers       |
+| reviews         |
+| series          |
++-----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from full_reviews;
++----------------------+---------------+--------+-----------+------------+-----------+
+| title                | released_year | rating | genre     | first_name | last_name |
++----------------------+---------------+--------+-----------+------------+-----------+
+| Archer               |          2009 |    8.0 | Animation | Thomas     | Stoneman  |
+| Arrested Development |          2003 |    8.1 | Comedy    | Thomas     | Stoneman  |
+| Bob's Burgers        |          2011 |    7.0 | Animation | Thomas     | Stoneman  |
+| Bojack Horseman      |          2014 |    7.5 | Animation | Thomas     | Stoneman  |
+| Breaking Bad         |          2008 |    9.5 | Drama     | Thomas     | Stoneman  |
+| Archer               |          2009 |    7.5 | Animation | Wyatt      | Skaggs    |
+| Bojack Horseman      |          2014 |    7.6 | Animation | Wyatt      | Skaggs    |
+| Breaking Bad         |          2008 |    9.3 | Drama     | Wyatt      | Skaggs    |
+| Curb Your Enthusiasm |          2000 |    6.5 | Comedy    | Wyatt      | Skaggs    |
+| Curb Your Enthusiasm |          2000 |    8.4 | Comedy    | Wyatt      | Skaggs    |
+| Fargo                |          2014 |    9.1 | Drama     | Wyatt      | Skaggs    |
+| Freaks and Geeks     |          1999 |    7.8 | Comedy    | Wyatt      | Skaggs    |
+| General Hospital     |          1963 |    5.5 | Drama     | Wyatt      | Skaggs    |
+| Stranger Things      |          2016 |    8.5 | Drama     | Wyatt      | Skaggs    |
+| Archer               |          2009 |    8.5 | Animation | Kimbra     | Masters   |
+| Arrested Development |          2003 |    8.0 | Comedy    | Kimbra     | Masters   |
+| Bob's Burgers        |          2011 |    7.1 | Animation | Kimbra     | Masters   |
+| Bojack Horseman      |          2014 |    7.8 | Animation | Kimbra     | Masters   |
+| Breaking Bad         |          2008 |    9.0 | Drama     | Kimbra     | Masters   |
+| Curb Your Enthusiasm |          2000 |    7.8 | Comedy    | Kimbra     | Masters   |
+| General Hospital     |          1963 |    6.8 | Drama     | Kimbra     | Masters   |
+| Seinfeld             |          1989 |    8.0 | Comedy    | Kimbra     | Masters   |
+| Stranger Things      |          2016 |    8.9 | Drama     | Kimbra     | Masters   |
+| Archer               |          2009 |    7.7 | Animation | Domingo    | Cortes    |
+| Arrested Development |          2003 |    6.0 | Comedy    | Domingo    | Cortes    |
+| Bob's Burgers        |          2011 |    8.0 | Animation | Domingo    | Cortes    |
+| Bojack Horseman      |          2014 |    8.3 | Animation | Domingo    | Cortes    |
+| Breaking Bad         |          2008 |    9.1 | Drama     | Domingo    | Cortes    |
+| Curb Your Enthusiasm |          2000 |    8.8 | Comedy    | Domingo    | Cortes    |
+| Freaks and Geeks     |          1999 |    8.5 | Comedy    | Domingo    | Cortes    |
+| General Hospital     |          1963 |    5.8 | Drama     | Domingo    | Cortes    |
+| Seinfeld             |          1989 |    7.2 | Comedy    | Domingo    | Cortes    |
+| Stranger Things      |          2016 |    8.9 | Drama     | Domingo    | Cortes    |
+| Archer               |          2009 |    8.9 | Animation | Colt       | Steele    |
+| Arrested Development |          2003 |    9.9 | Comedy    | Colt       | Steele    |
+| Bob's Burgers        |          2011 |    8.0 | Animation | Colt       | Steele    |
+| Bojack Horseman      |          2014 |    8.5 | Animation | Colt       | Steele    |
+| Breaking Bad         |          2008 |    9.9 | Drama     | Colt       | Steele    |
+| Curb Your Enthusiasm |          2000 |    9.1 | Comedy    | Colt       | Steele    |
+| Fargo                |          2014 |    9.7 | Drama     | Colt       | Steele    |
+| Freaks and Geeks     |          1999 |    9.3 | Comedy    | Colt       | Steele    |
+| General Hospital     |          1963 |    4.5 | Drama     | Colt       | Steele    |
+| Halt and Catch Fire  |          2014 |    9.9 | Drama     | Colt       | Steele    |
+| Arrested Development |          2003 |    8.4 | Comedy    | Pinkie     | Petit     |
+| Bob's Burgers        |          2011 |    7.5 | Animation | Pinkie     | Petit     |
+| Freaks and Geeks     |          1999 |    8.8 | Comedy    | Pinkie     | Petit     |
+| General Hospital     |          1963 |    4.3 | Drama     | Pinkie     | Petit     |
++----------------------+---------------+--------+-----------+------------+-----------+
+47 rows in set (0.01 sec)
+
+mysql> select * from full_reviews where genre='Animation';
++-----------------+---------------+--------+-----------+------------+-----------+
+| title           | released_year | rating | genre     | first_name | last_name |
++-----------------+---------------+--------+-----------+------------+-----------+
+| Archer          |          2009 |    8.0 | Animation | Thomas     | Stoneman  |
+| Archer          |          2009 |    7.5 | Animation | Wyatt      | Skaggs    |
+| Archer          |          2009 |    8.5 | Animation | Kimbra     | Masters   |
+| Archer          |          2009 |    7.7 | Animation | Domingo    | Cortes    |
+| Archer          |          2009 |    8.9 | Animation | Colt       | Steele    |
+| Bob's Burgers   |          2011 |    7.0 | Animation | Thomas     | Stoneman  |
+| Bob's Burgers   |          2011 |    7.5 | Animation | Pinkie     | Petit     |
+| Bob's Burgers   |          2011 |    8.0 | Animation | Domingo    | Cortes    |
+| Bob's Burgers   |          2011 |    7.1 | Animation | Kimbra     | Masters   |
+| Bob's Burgers   |          2011 |    8.0 | Animation | Colt       | Steele    |
+| Bojack Horseman |          2014 |    7.5 | Animation | Thomas     | Stoneman  |
+| Bojack Horseman |          2014 |    7.8 | Animation | Kimbra     | Masters   |
+| Bojack Horseman |          2014 |    8.3 | Animation | Domingo    | Cortes    |
+| Bojack Horseman |          2014 |    7.6 | Animation | Wyatt      | Skaggs    |
+| Bojack Horseman |          2014 |    8.5 | Animation | Colt       | Steele    |
++-----------------+---------------+--------+-----------+------------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> select genre,avg(rating) as rating from full_reviews group by genre;
++-----------+---------+
+| genre     | rating  |
++-----------+---------+
+| Animation | 7.86000 |
+| Comedy    | 8.16250 |
+| Drama     | 8.04375 |
++-----------+---------+
+3 rows in set (0.06 sec)
+
+mysql> create view ordered_series as select * from series order by released_year;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from ordered_series;
++----+-----------------------+---------------+-----------+
+| id | title                 | released_year | genre     |
++----+-----------------------+---------------+-----------+
+|  9 | General Hospital      |          1963 | Drama     |
+| 13 | Seinfeld              |          1989 | Comedy    |
+|  8 | Freaks and Geeks      |          1999 | Comedy    |
+|  6 | Curb Your Enthusiasm  |          2000 | Comedy    |
+| 11 | Malcolm In The Middle |          2000 | Comedy    |
+|  2 | Arrested Development  |          2003 | Comedy    |
+| 12 | Pushing Daisies       |          2007 | Comedy    |
+|  5 | Breaking Bad          |          2008 | Drama     |
+|  1 | Archer                |          2009 | Animation |
+|  3 | Bob's Burgers         |          2011 | Animation |
+|  4 | Bojack Horseman       |          2014 | Animation |
+|  7 | Fargo                 |          2014 | Drama     |
+| 10 | Halt and Catch Fire   |          2014 | Drama     |
+| 14 | Stranger Things       |          2016 | Drama     |
++----+-----------------------+---------------+-----------+
+14 rows in set (0.04 sec)
+
+mysql> insert into ordered_series values ('ans',2012,'Comedy');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into ordered_series values (15,'ans',2012,'Comedy');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from ordered_series;
++----+-----------------------+---------------+-----------+
+| id | title                 | released_year | genre     |
++----+-----------------------+---------------+-----------+
+|  9 | General Hospital      |          1963 | Drama     |
+| 13 | Seinfeld              |          1989 | Comedy    |
+|  8 | Freaks and Geeks      |          1999 | Comedy    |
+|  6 | Curb Your Enthusiasm  |          2000 | Comedy    |
+| 11 | Malcolm In The Middle |          2000 | Comedy    |
+|  2 | Arrested Development  |          2003 | Comedy    |
+| 12 | Pushing Daisies       |          2007 | Comedy    |
+|  5 | Breaking Bad          |          2008 | Drama     |
+|  1 | Archer                |          2009 | Animation |
+|  3 | Bob's Burgers         |          2011 | Animation |
+| 15 | ans                   |          2012 | Comedy    |
+|  4 | Bojack Horseman       |          2014 | Animation |
+|  7 | Fargo                 |          2014 | Drama     |
+| 10 | Halt and Catch Fire   |          2014 | Drama     |
+| 14 | Stranger Things       |          2016 | Drama     |
++----+-----------------------+---------------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> delete from ordered_species where title=abc
+    -> ;
+ERROR 1146 (42S02): Table 'books.ordered_species' doesn't exist
+mysql> delete from ordered_series where title=abc;
+ERROR 1054 (42S22): Unknown column 'abc' in 'where clause'
+mysql> delete from ordered_series where title='abc';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from ordered_series;
++----+-----------------------+---------------+-----------+
+| id | title                 | released_year | genre     |
++----+-----------------------+---------------+-----------+
+|  9 | General Hospital      |          1963 | Drama     |
+| 13 | Seinfeld              |          1989 | Comedy    |
+|  8 | Freaks and Geeks      |          1999 | Comedy    |
+|  6 | Curb Your Enthusiasm  |          2000 | Comedy    |
+| 11 | Malcolm In The Middle |          2000 | Comedy    |
+|  2 | Arrested Development  |          2003 | Comedy    |
+| 12 | Pushing Daisies       |          2007 | Comedy    |
+|  5 | Breaking Bad          |          2008 | Drama     |
+|  1 | Archer                |          2009 | Animation |
+|  3 | Bob's Burgers         |          2011 | Animation |
+| 15 | ans                   |          2012 | Comedy    |
+|  4 | Bojack Horseman       |          2014 | Animation |
+|  7 | Fargo                 |          2014 | Drama     |
+| 10 | Halt and Catch Fire   |          2014 | Drama     |
+| 14 | Stranger Things       |          2016 | Drama     |
++----+-----------------------+---------------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> delete from ordered_species where title is 'abc';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''abc'' at line 1
+mysql> ALTER VIEW ordered_series as select * from series order by released_year desc;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from ordered_series;
++----+-----------------------+---------------+-----------+
+| id | title                 | released_year | genre     |
++----+-----------------------+---------------+-----------+
+| 14 | Stranger Things       |          2016 | Drama     |
+|  4 | Bojack Horseman       |          2014 | Animation |
+|  7 | Fargo                 |          2014 | Drama     |
+| 10 | Halt and Catch Fire   |          2014 | Drama     |
+| 15 | ans                   |          2012 | Comedy    |
+|  3 | Bob's Burgers         |          2011 | Animation |
+|  1 | Archer                |          2009 | Animation |
+|  5 | Breaking Bad          |          2008 | Drama     |
+| 12 | Pushing Daisies       |          2007 | Comedy    |
+|  2 | Arrested Development  |          2003 | Comedy    |
+|  6 | Curb Your Enthusiasm  |          2000 | Comedy    |
+| 11 | Malcolm In The Middle |          2000 | Comedy    |
+|  8 | Freaks and Geeks      |          1999 | Comedy    |
+| 13 | Seinfeld              |          1989 | Comedy    |
+|  9 | General Hospital      |          1963 | Drama     |
++----+-----------------------+---------------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> drop view ordered_series;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select * from ordered_series;
+ERROR 1146 (42S02): Table 'books.ordered_series' doesn't exist
+mysql> select * from full_reviews
+    -> ;
++----------------------+---------------+--------+-----------+------------+-----------+
+| title                | released_year | rating | genre     | first_name | last_name |
++----------------------+---------------+--------+-----------+------------+-----------+
+| Archer               |          2009 |    8.0 | Animation | Thomas     | Stoneman  |
+| Arrested Development |          2003 |    8.1 | Comedy    | Thomas     | Stoneman  |
+| Bob's Burgers        |          2011 |    7.0 | Animation | Thomas     | Stoneman  |
+| Bojack Horseman      |          2014 |    7.5 | Animation | Thomas     | Stoneman  |
+| Breaking Bad         |          2008 |    9.5 | Drama     | Thomas     | Stoneman  |
+| Archer               |          2009 |    7.5 | Animation | Wyatt      | Skaggs    |
+| Bojack Horseman      |          2014 |    7.6 | Animation | Wyatt      | Skaggs    |
+| Breaking Bad         |          2008 |    9.3 | Drama     | Wyatt      | Skaggs    |
+| Curb Your Enthusiasm |          2000 |    6.5 | Comedy    | Wyatt      | Skaggs    |
+| Curb Your Enthusiasm |          2000 |    8.4 | Comedy    | Wyatt      | Skaggs    |
+| Fargo                |          2014 |    9.1 | Drama     | Wyatt      | Skaggs    |
+| Freaks and Geeks     |          1999 |    7.8 | Comedy    | Wyatt      | Skaggs    |
+| General Hospital     |          1963 |    5.5 | Drama     | Wyatt      | Skaggs    |
+| Stranger Things      |          2016 |    8.5 | Drama     | Wyatt      | Skaggs    |
+| Archer               |          2009 |    8.5 | Animation | Kimbra     | Masters   |
+| Arrested Development |          2003 |    8.0 | Comedy    | Kimbra     | Masters   |
+| Bob's Burgers        |          2011 |    7.1 | Animation | Kimbra     | Masters   |
+| Bojack Horseman      |          2014 |    7.8 | Animation | Kimbra     | Masters   |
+| Breaking Bad         |          2008 |    9.0 | Drama     | Kimbra     | Masters   |
+| Curb Your Enthusiasm |          2000 |    7.8 | Comedy    | Kimbra     | Masters   |
+| General Hospital     |          1963 |    6.8 | Drama     | Kimbra     | Masters   |
+| Seinfeld             |          1989 |    8.0 | Comedy    | Kimbra     | Masters   |
+| Stranger Things      |          2016 |    8.9 | Drama     | Kimbra     | Masters   |
+| Archer               |          2009 |    7.7 | Animation | Domingo    | Cortes    |
+| Arrested Development |          2003 |    6.0 | Comedy    | Domingo    | Cortes    |
+| Bob's Burgers        |          2011 |    8.0 | Animation | Domingo    | Cortes    |
+| Bojack Horseman      |          2014 |    8.3 | Animation | Domingo    | Cortes    |
+| Breaking Bad         |          2008 |    9.1 | Drama     | Domingo    | Cortes    |
+| Curb Your Enthusiasm |          2000 |    8.8 | Comedy    | Domingo    | Cortes    |
+| Freaks and Geeks     |          1999 |    8.5 | Comedy    | Domingo    | Cortes    |
+| General Hospital     |          1963 |    5.8 | Drama     | Domingo    | Cortes    |
+| Seinfeld             |          1989 |    7.2 | Comedy    | Domingo    | Cortes    |
+| Stranger Things      |          2016 |    8.9 | Drama     | Domingo    | Cortes    |
+| Archer               |          2009 |    8.9 | Animation | Colt       | Steele    |
+| Arrested Development |          2003 |    9.9 | Comedy    | Colt       | Steele    |
+| Bob's Burgers        |          2011 |    8.0 | Animation | Colt       | Steele    |
+| Bojack Horseman      |          2014 |    8.5 | Animation | Colt       | Steele    |
+| Breaking Bad         |          2008 |    9.9 | Drama     | Colt       | Steele    |
+| Curb Your Enthusiasm |          2000 |    9.1 | Comedy    | Colt       | Steele    |
+| Fargo                |          2014 |    9.7 | Drama     | Colt       | Steele    |
+| Freaks and Geeks     |          1999 |    9.3 | Comedy    | Colt       | Steele    |
+| General Hospital     |          1963 |    4.5 | Drama     | Colt       | Steele    |
+| Halt and Catch Fire  |          2014 |    9.9 | Drama     | Colt       | Steele    |
+| Arrested Development |          2003 |    8.4 | Comedy    | Pinkie     | Petit     |
+| Bob's Burgers        |          2011 |    7.5 | Animation | Pinkie     | Petit     |
+| Freaks and Geeks     |          1999 |    8.8 | Comedy    | Pinkie     | Petit     |
+| General Hospital     |          1963 |    4.3 | Drama     | Pinkie     | Petit     |
++----------------------+---------------+--------+-----------+------------+-----------+
+47 rows in set (0.03 sec)
+
+mysql> show table^Z^C
+mysql> select title,avg(rating),count(rating) from full_reviews group by title;
++----------------------+-------------+---------------+
+| title                | avg(rating) | count(rating) |
++----------------------+-------------+---------------+
+| Archer               |     8.12000 |             5 |
+| Arrested Development |     8.08000 |             5 |
+| Bob's Burgers        |     7.52000 |             5 |
+| Bojack Horseman      |     7.94000 |             5 |
+| Breaking Bad         |     9.36000 |             5 |
+| Curb Your Enthusiasm |     8.12000 |             5 |
+| Fargo                |     9.40000 |             2 |
+| Freaks and Geeks     |     8.60000 |             4 |
+| General Hospital     |     5.38000 |             5 |
+| Halt and Catch Fire  |     9.90000 |             1 |
+| Seinfeld             |     7.60000 |             2 |
+| Stranger Things      |     8.76667 |             3 |
++----------------------+-------------+---------------+
+12 rows in set (0.00 sec)
+
+mysql> select title,avg(rating),count(rating) from full_reviews group by title having avg(rating) >5;
++----------------------+-------------+---------------+
+| title                | avg(rating) | count(rating) |
++----------------------+-------------+---------------+
+| Archer               |     8.12000 |             5 |
+| Arrested Development |     8.08000 |             5 |
+| Bob's Burgers        |     7.52000 |             5 |
+| Bojack Horseman      |     7.94000 |             5 |
+| Breaking Bad         |     9.36000 |             5 |
+| Curb Your Enthusiasm |     8.12000 |             5 |
+| Fargo                |     9.40000 |             2 |
+| Freaks and Geeks     |     8.60000 |             4 |
+| General Hospital     |     5.38000 |             5 |
+| Halt and Catch Fire  |     9.90000 |             1 |
+| Seinfeld             |     7.60000 |             2 |
+| Stranger Things      |     8.76667 |             3 |
++----------------------+-------------+---------------+
+12 rows in set (0.04 sec)
+
+mysql> select title,avg(rating),count(rating) from full_reviews group by title having avg(rating) >9;
++---------------------+-------------+---------------+
+| title               | avg(rating) | count(rating) |
++---------------------+-------------+---------------+
+| Breaking Bad        |     9.36000 |             5 |
+| Fargo               |     9.40000 |             2 |
+| Halt and Catch Fire |     9.90000 |             1 |
++---------------------+-------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select title,avg(rating) as avg,count(rating) from full_reviews group by title having avg > 9;
++---------------------+---------+---------------+
+| title               | avg     | count(rating) |
++---------------------+---------+---------------+
+| Breaking Bad        | 9.36000 |             5 |
+| Fargo               | 9.40000 |             2 |
+| Halt and Catch Fire | 9.90000 |             1 |
++---------------------+---------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select title,avg(rating) as avg,count(rating) from full_reviews group by title having avg > 9;^C
+mysql>
+mysql> select avg(rating) from full_reviews;
++-------------+
+| avg(rating) |
++-------------+
+|     8.02553 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(rating) from full_reviews group by titlr;
+ERROR 1054 (42S22): Unknown column 'titlr' in 'group statement'
+mysql> select avg(rating) from full_reviews group by titlr;
+ERROR 1054 (42S22): Unknown column 'titlr' in 'group statement'
+mysql> select avg(rating) from full_reviews group by title;
++-------------+
+| avg(rating) |
++-------------+
+|     8.12000 |
+|     8.08000 |
+|     7.52000 |
+|     7.94000 |
+|     9.36000 |
+|     8.12000 |
+|     9.40000 |
+|     8.60000 |
+|     5.38000 |
+|     9.90000 |
+|     7.60000 |
+|     8.76667 |
++-------------+
+12 rows in set (0.00 sec)
+
+mysql> select title,avg(rating) from full_reviews group by title;
++----------------------+-------------+
+| title                | avg(rating) |
++----------------------+-------------+
+| Archer               |     8.12000 |
+| Arrested Development |     8.08000 |
+| Bob's Burgers        |     7.52000 |
+| Bojack Horseman      |     7.94000 |
+| Breaking Bad         |     9.36000 |
+| Curb Your Enthusiasm |     8.12000 |
+| Fargo                |     9.40000 |
+| Freaks and Geeks     |     8.60000 |
+| General Hospital     |     5.38000 |
+| Halt and Catch Fire  |     9.90000 |
+| Seinfeld             |     7.60000 |
+| Stranger Things      |     8.76667 |
++----------------------+-------------+
+12 rows in set (0.00 sec)
+
+mysql> select title,avg(rating) from full_reviews group by title with roll up;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'with roll up' at line 1
+mysql> select title,avg(rating) from full_reviews group by title with rollup;
++----------------------+-------------+
+| title                | avg(rating) |
++----------------------+-------------+
+| Archer               |     8.12000 |
+| Arrested Development |     8.08000 |
+| Bob's Burgers        |     7.52000 |
+| Bojack Horseman      |     7.94000 |
+| Breaking Bad         |     9.36000 |
+| Curb Your Enthusiasm |     8.12000 |
+| Fargo                |     9.40000 |
+| Freaks and Geeks     |     8.60000 |
+| General Hospital     |     5.38000 |
+| Halt and Catch Fire  |     9.90000 |
+| Seinfeld             |     7.60000 |
+| Stranger Things      |     8.76667 |
+| NULL                 |     8.02553 |
++----------------------+-------------+
+13 rows in set (0.02 sec)
+
+mysql> select released_year,avg(rating) from full_reviews group by released_year witho rollup;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'witho rollup' at line 1
+mysql> select released_year,avg(rating) from full_reviews group by released_year with rollup;
++---------------+-------------+
+| released_year | avg(rating) |
++---------------+-------------+
+|          1963 |     5.38000 |
+|          1989 |     7.60000 |
+|          1999 |     8.60000 |
+|          2000 |     8.12000 |
+|          2003 |     8.08000 |
+|          2008 |     9.36000 |
+|          2009 |     8.12000 |
+|          2011 |     7.52000 |
+|          2014 |     8.55000 |
+|          2016 |     8.76667 |
+|          NULL |     8.02553 |
++---------------+-------------+
+11 rows in set (0.02 sec)
+
+mysql> select released_year,count(rating) from full_reviews group by released_year with rollup;
++---------------+---------------+
+| released_year | count(rating) |
++---------------+---------------+
+|          1963 |             5 |
+|          1989 |             2 |
+|          1999 |             4 |
+|          2000 |             5 |
+|          2003 |             5 |
+|          2008 |             5 |
+|          2009 |             5 |
+|          2011 |             5 |
+|          2014 |             8 |
+|          2016 |             3 |
+|          NULL |            47 |
++---------------+---------------+
+11 rows in set (0.00 sec)
+
+mysql> select released_year,genre,count(rating) from full_reviews group by released_year,genre with rollup;
++---------------+-----------+---------------+
+| released_year | genre     | count(rating) |
++---------------+-----------+---------------+
+|          1963 | Drama     |             5 |
+|          1963 | NULL      |             5 |
+|          1989 | Comedy    |             2 |
+|          1989 | NULL      |             2 |
+|          1999 | Comedy    |             4 |
+|          1999 | NULL      |             4 |
+|          2000 | Comedy    |             5 |
+|          2000 | NULL      |             5 |
+|          2003 | Comedy    |             5 |
+|          2003 | NULL      |             5 |
+|          2008 | Drama     |             5 |
+|          2008 | NULL      |             5 |
+|          2009 | Animation |             5 |
+|          2009 | NULL      |             5 |
+|          2011 | Animation |             5 |
+|          2011 | NULL      |             5 |
+|          2014 | Animation |             5 |
+|          2014 | Drama     |             3 |
+|          2014 | NULL      |             8 |
+|          2016 | Drama     |             3 |
+|          2016 | NULL      |             3 |
+|          NULL | NULL      |            47 |
++---------------+-----------+---------------+
+22 rows in set (0.00 sec)
+
+mysql> select genre,released_year,avg(rating) from full_reviews group by genre,released_year with rollup;
++-----------+---------------+-------------+
+| genre     | released_year | avg(rating) |
++-----------+---------------+-------------+
+| Animation |          2009 |     8.12000 |
+| Animation |          2011 |     7.52000 |
+| Animation |          2014 |     7.94000 |
+| Animation |          NULL |     7.86000 |
+| Comedy    |          1989 |     7.60000 |
+| Comedy    |          1999 |     8.60000 |
+| Comedy    |          2000 |     8.12000 |
+| Comedy    |          2003 |     8.08000 |
+| Comedy    |          NULL |     8.16250 |
+| Drama     |          1963 |     5.38000 |
+| Drama     |          2008 |     9.36000 |
+| Drama     |          2014 |     9.56667 |
+| Drama     |          2016 |     8.76667 |
+| Drama     |          NULL |     8.04375 |
+| NULL      |          NULL |     8.02553 |
++-----------+---------------+-------------+
+15 rows in set (0.00 sec)
+
+mysql> select @@global.sql_mode;
++-----------------------------------------------------------------------------------------------------------------------+
+| @@global.sql_mode                                                                                                     |
++-----------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION |
++-----------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.04 sec)
+
+mysql> select @@session.sql_mode;
++-----------------------------------------------------------------------------------------------------------------------+
+| @@session.sql_mode                                                                                                    |
++-----------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION |
++-----------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> show warnings;
+Empty set (0.00 sec)
+
+mysql> CREATE TABLE employees (
+    ->     emp_no INT PRIMARY KEY AUTO_INCREMENT,
+    ->     department VARCHAR(20),
+    ->     salary INT
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql>
+mysql> INSERT INTO employees (department, salary) VALUES
+    -> ('engineering', 80000),
+    -> ('engineering', 69000),
+    -> ('engineering', 70000),
+    -> ('engineering', 103000),
+    -> ('engineering', 67000),
+    -> ('engineering', 89000),
+    -> ('engineering', 91000),
+    -> ('sales', 59000),
+    -> ('sales', 70000),
+    -> ('sales', 159000),
+    -> ('sales', 72000),
+    -> ('sales', 60000),
+    -> ('sales', 61000),
+    -> ('sales', 61000),
+    -> ('customer service', 38000),
+    -> ('customer service', 45000),
+    -> ('customer service', 61000),
+    -> ('customer service', 40000),
+    -> ('customer service', 31000),
+    -> ('customer service', 56000),
+    -> ('customer service', 55000);
+Query OK, 21 rows affected (0.07 sec)
+Records: 21  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> SELECT emp_no, department, salary, AVG(salary) OVER() FROM employees;
++--------+------------------+--------+--------------------+
+| emp_no | department       | salary | AVG(salary) OVER() |
++--------+------------------+--------+--------------------+
+|      1 | engineering      |  80000 |         68428.5714 |
+|      2 | engineering      |  69000 |         68428.5714 |
+|      3 | engineering      |  70000 |         68428.5714 |
+|      4 | engineering      | 103000 |         68428.5714 |
+|      5 | engineering      |  67000 |         68428.5714 |
+|      6 | engineering      |  89000 |         68428.5714 |
+|      7 | engineering      |  91000 |         68428.5714 |
+|      8 | sales            |  59000 |         68428.5714 |
+|      9 | sales            |  70000 |         68428.5714 |
+|     10 | sales            | 159000 |         68428.5714 |
+|     11 | sales            |  72000 |         68428.5714 |
+|     12 | sales            |  60000 |         68428.5714 |
+|     13 | sales            |  61000 |         68428.5714 |
+|     14 | sales            |  61000 |         68428.5714 |
+|     15 | customer service |  38000 |         68428.5714 |
+|     16 | customer service |  45000 |         68428.5714 |
+|     17 | customer service |  61000 |         68428.5714 |
+|     18 | customer service |  40000 |         68428.5714 |
+|     19 | customer service |  31000 |         68428.5714 |
+|     20 | customer service |  56000 |         68428.5714 |
+|     21 | customer service |  55000 |         68428.5714 |
++--------+------------------+--------+--------------------+
+21 rows in set (0.01 sec)
+
+mysql>
+mysql> SELECT
+    ->     emp_no,
+    ->     department,
+    ->     salary,
+    ->     MIN(salary) OVER(),
+    ->     MAX(salary) OVER()
+    -> FROM employees;
++--------+------------------+--------+--------------------+--------------------+
+| emp_no | department       | salary | MIN(salary) OVER() | MAX(salary) OVER() |
++--------+------------------+--------+--------------------+--------------------+
+|      1 | engineering      |  80000 |              31000 |             159000 |
+|      2 | engineering      |  69000 |              31000 |             159000 |
+|      3 | engineering      |  70000 |              31000 |             159000 |
+|      4 | engineering      | 103000 |              31000 |             159000 |
+|      5 | engineering      |  67000 |              31000 |             159000 |
+|      6 | engineering      |  89000 |              31000 |             159000 |
+|      7 | engineering      |  91000 |              31000 |             159000 |
+|      8 | sales            |  59000 |              31000 |             159000 |
+|      9 | sales            |  70000 |              31000 |             159000 |
+|     10 | sales            | 159000 |              31000 |             159000 |
+|     11 | sales            |  72000 |              31000 |             159000 |
+|     12 | sales            |  60000 |              31000 |             159000 |
+|     13 | sales            |  61000 |              31000 |             159000 |
+|     14 | sales            |  61000 |              31000 |             159000 |
+|     15 | customer service |  38000 |              31000 |             159000 |
+|     16 | customer service |  45000 |              31000 |             159000 |
+|     17 | customer service |  61000 |              31000 |             159000 |
+|     18 | customer service |  40000 |              31000 |             159000 |
+|     19 | customer service |  31000 |              31000 |             159000 |
+|     20 | customer service |  56000 |              31000 |             159000 |
+|     21 | customer service |  55000 |              31000 |             159000 |
++--------+------------------+--------+--------------------+--------------------+
+21 rows in set (0.00 sec)
+
+mysql>
+mysql> INSERT INTO employees (department, salary) VALUES
+    -> ('engineering', 80000),
+    -> ('engineering', 69000),
+    -> ('engineering', 70000),
+    -> ('engineering', 103000),
+    -> ('engineering', 67000),
+    -> ('engineering', 89000),
+    -> ('engineering', 91000),
+    -> ('sales', 59000),
+    -> ('sales', 70000),
+    -> ('sales', 159000),
+    -> ('sales', 72000),
+    -> ('sales', 60000),
+    -> ('sales', 61000),
+    -> ('sales', 61000),
+    -> ('customer service', 38000),
+    -> ('customer service', 45000),
+    -> ('customer service', 61000),
+    -> ('customer service', 40000),
+    -> ('customer service', 31000),
+    -> ('customer service', 56000),
+    -> ('customer service', 55000);
+Query OK, 21 rows affected (0.01 sec)
+Records: 21  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> SELECT emp_no, department, salary, AVG(salary) OVER() FROM employees;
++--------+------------------+--------+--------------------+
+| emp_no | department       | salary | AVG(salary) OVER() |
++--------+------------------+--------+--------------------+
+|      1 | engineering      |  80000 |         68428.5714 |
+|      2 | engineering      |  69000 |         68428.5714 |
+|      3 | engineering      |  70000 |         68428.5714 |
+|      4 | engineering      | 103000 |         68428.5714 |
+|      5 | engineering      |  67000 |         68428.5714 |
+|      6 | engineering      |  89000 |         68428.5714 |
+|      7 | engineering      |  91000 |         68428.5714 |
+|      8 | sales            |  59000 |         68428.5714 |
+|      9 | sales            |  70000 |         68428.5714 |
+|     10 | sales            | 159000 |         68428.5714 |
+|     11 | sales            |  72000 |         68428.5714 |
+|     12 | sales            |  60000 |         68428.5714 |
+|     13 | sales            |  61000 |         68428.5714 |
+|     14 | sales            |  61000 |         68428.5714 |
+|     15 | customer service |  38000 |         68428.5714 |
+|     16 | customer service |  45000 |         68428.5714 |
+|     17 | customer service |  61000 |         68428.5714 |
+|     18 | customer service |  40000 |         68428.5714 |
+|     19 | customer service |  31000 |         68428.5714 |
+|     20 | customer service |  56000 |         68428.5714 |
+|     21 | customer service |  55000 |         68428.5714 |
+|     22 | engineering      |  80000 |         68428.5714 |
+|     23 | engineering      |  69000 |         68428.5714 |
+|     24 | engineering      |  70000 |         68428.5714 |
+|     25 | engineering      | 103000 |         68428.5714 |
+|     26 | engineering      |  67000 |         68428.5714 |
+|     27 | engineering      |  89000 |         68428.5714 |
+|     28 | engineering      |  91000 |         68428.5714 |
+|     29 | sales            |  59000 |         68428.5714 |
+|     30 | sales            |  70000 |         68428.5714 |
+|     31 | sales            | 159000 |         68428.5714 |
+|     32 | sales            |  72000 |         68428.5714 |
+|     33 | sales            |  60000 |         68428.5714 |
+|     34 | sales            |  61000 |         68428.5714 |
+|     35 | sales            |  61000 |         68428.5714 |
+|     36 | customer service |  38000 |         68428.5714 |
+|     37 | customer service |  45000 |         68428.5714 |
+|     38 | customer service |  61000 |         68428.5714 |
+|     39 | customer service |  40000 |         68428.5714 |
+|     40 | customer service |  31000 |         68428.5714 |
+|     41 | customer service |  56000 |         68428.5714 |
+|     42 | customer service |  55000 |         68428.5714 |
++--------+------------------+--------+--------------------+
+42 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT
+    ->     emp_no,
+    ->     department,
+    ->     salary,
+    ->     MIN(salary) OVER(),
+    ->     MAX(salary) OVER()
+    -> FROM employees;
++--------+------------------+--------+--------------------+--------------------+
+| emp_no | department       | salary | MIN(salary) OVER() | MAX(salary) OVER() |
++--------+------------------+--------+--------------------+--------------------+
+|      1 | engineering      |  80000 |              31000 |             159000 |
+|      2 | engineering      |  69000 |              31000 |             159000 |
+|      3 | engineering      |  70000 |              31000 |             159000 |
+|      4 | engineering      | 103000 |              31000 |             159000 |
+|      5 | engineering      |  67000 |              31000 |             159000 |
+|      6 | engineering      |  89000 |              31000 |             159000 |
+|      7 | engineering      |  91000 |              31000 |             159000 |
+|      8 | sales            |  59000 |              31000 |             159000 |
+|      9 | sales            |  70000 |              31000 |             159000 |
+|     10 | sales            | 159000 |              31000 |             159000 |
+|     11 | sales            |  72000 |              31000 |             159000 |
+|     12 | sales            |  60000 |              31000 |             159000 |
+|     13 | sales            |  61000 |              31000 |             159000 |
+|     14 | sales            |  61000 |              31000 |             159000 |
+|     15 | customer service |  38000 |              31000 |             159000 |
+|     16 | customer service |  45000 |              31000 |             159000 |
+|     17 | customer service |  61000 |              31000 |             159000 |
+|     18 | customer service |  40000 |              31000 |             159000 |
+|     19 | customer service |  31000 |              31000 |             159000 |
+|     20 | customer service |  56000 |              31000 |             159000 |
+|     21 | customer service |  55000 |              31000 |             159000 |
+|     22 | engineering      |  80000 |              31000 |             159000 |
+|     23 | engineering      |  69000 |              31000 |             159000 |
+|     24 | engineering      |  70000 |              31000 |             159000 |
+|     25 | engineering      | 103000 |              31000 |             159000 |
+|     26 | engineering      |  67000 |              31000 |             159000 |
+|     27 | engineering      |  89000 |              31000 |             159000 |
+|     28 | engineering      |  91000 |              31000 |             159000 |
+|     29 | sales            |  59000 |              31000 |             159000 |
+|     30 | sales            |  70000 |              31000 |             159000 |
+|     31 | sales            | 159000 |              31000 |             159000 |
+|     32 | sales            |  72000 |              31000 |             159000 |
+|     33 | sales            |  60000 |              31000 |             159000 |
+|     34 | sales            |  61000 |              31000 |             159000 |
+|     35 | sales            |  61000 |              31000 |             159000 |
+|     36 | customer service |  38000 |              31000 |             159000 |
+|     37 | customer service |  45000 |              31000 |             159000 |
+|     38 | customer service |  61000 |              31000 |             159000 |
+|     39 | customer service |  40000 |              31000 |             159000 |
+|     40 | customer service |  31000 |              31000 |             159000 |
+|     41 | customer service |  56000 |              31000 |             159000 |
+|     42 | customer service |  55000 |              31000 |             159000 |
++--------+------------------+--------+--------------------+--------------------+
+42 rows in set (0.00 sec)
+
+mysql>     select * from employees;
++--------+------------------+--------+
+| emp_no | department       | salary |
++--------+------------------+--------+
+|      1 | engineering      |  80000 |
+|      2 | engineering      |  69000 |
+|      3 | engineering      |  70000 |
+|      4 | engineering      | 103000 |
+|      5 | engineering      |  67000 |
+|      6 | engineering      |  89000 |
+|      7 | engineering      |  91000 |
+|      8 | sales            |  59000 |
+|      9 | sales            |  70000 |
+|     10 | sales            | 159000 |
+|     11 | sales            |  72000 |
+|     12 | sales            |  60000 |
+|     13 | sales            |  61000 |
+|     14 | sales            |  61000 |
+|     15 | customer service |  38000 |
+|     16 | customer service |  45000 |
+|     17 | customer service |  61000 |
+|     18 | customer service |  40000 |
+|     19 | customer service |  31000 |
+|     20 | customer service |  56000 |
+|     21 | customer service |  55000 |
+|     22 | engineering      |  80000 |
+|     23 | engineering      |  69000 |
+|     24 | engineering      |  70000 |
+|     25 | engineering      | 103000 |
+|     26 | engineering      |  67000 |
+|     27 | engineering      |  89000 |
+|     28 | engineering      |  91000 |
+|     29 | sales            |  59000 |
+|     30 | sales            |  70000 |
+|     31 | sales            | 159000 |
+|     32 | sales            |  72000 |
+|     33 | sales            |  60000 |
+|     34 | sales            |  61000 |
+|     35 | sales            |  61000 |
+|     36 | customer service |  38000 |
+|     37 | customer service |  45000 |
+|     38 | customer service |  61000 |
+|     39 | customer service |  40000 |
+|     40 | customer service |  31000 |
+|     41 | customer service |  56000 |
+|     42 | customer service |  55000 |
++--------+------------------+--------+
+42 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     emp_no, department, salary, MIN(salary), MAX(salary)
+    -> FROM
+    ->     employees;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'books.employees.emp_no'; this is incompatible with sql_mode=only_full_group_by
+mysql>
+mysql>  SELECT
+    ->     emp_no, department, salary, MIN(salary), MAX(salary)
+    -> FROM
+    ->     emp_no, department, salary, MIN(salary), MAX(salary)^C
+mysql>  SELECT emp_no,department, min(salary) over(),max(salary) over() from employees;
++--------+------------------+--------------------+--------------------+
+| emp_no | department       | min(salary) over() | max(salary) over() |
++--------+------------------+--------------------+--------------------+
+|      1 | engineering      |              31000 |             159000 |
+|      2 | engineering      |              31000 |             159000 |
+|      3 | engineering      |              31000 |             159000 |
+|      4 | engineering      |              31000 |             159000 |
+|      5 | engineering      |              31000 |             159000 |
+|      6 | engineering      |              31000 |             159000 |
+|      7 | engineering      |              31000 |             159000 |
+|      8 | sales            |              31000 |             159000 |
+|      9 | sales            |              31000 |             159000 |
+|     10 | sales            |              31000 |             159000 |
+|     11 | sales            |              31000 |             159000 |
+|     12 | sales            |              31000 |             159000 |
+|     13 | sales            |              31000 |             159000 |
+|     14 | sales            |              31000 |             159000 |
+|     15 | customer service |              31000 |             159000 |
+|     16 | customer service |              31000 |             159000 |
+|     17 | customer service |              31000 |             159000 |
+|     18 | customer service |              31000 |             159000 |
+|     19 | customer service |              31000 |             159000 |
+|     20 | customer service |              31000 |             159000 |
+|     21 | customer service |              31000 |             159000 |
+|     22 | engineering      |              31000 |             159000 |
+|     23 | engineering      |              31000 |             159000 |
+|     24 | engineering      |              31000 |             159000 |
+|     25 | engineering      |              31000 |             159000 |
+|     26 | engineering      |              31000 |             159000 |
+|     27 | engineering      |              31000 |             159000 |
+|     28 | engineering      |              31000 |             159000 |
+|     29 | sales            |              31000 |             159000 |
+|     30 | sales            |              31000 |             159000 |
+|     31 | sales            |              31000 |             159000 |
+|     32 | sales            |              31000 |             159000 |
+|     33 | sales            |              31000 |             159000 |
+|     34 | sales            |              31000 |             159000 |
+|     35 | sales            |              31000 |             159000 |
+|     36 | customer service |              31000 |             159000 |
+|     37 | customer service |              31000 |             159000 |
+|     38 | customer service |              31000 |             159000 |
+|     39 | customer service |              31000 |             159000 |
+|     40 | customer service |              31000 |             159000 |
+|     41 | customer service |              31000 |             159000 |
+|     42 | customer service |              31000 |             159000 |
++--------+------------------+--------------------+--------------------+
+42 rows in set (0.00 sec)
+
+mysql>  SELECT emp_no,department, avg(salary) over(partition by department) as dept_avg from employees;
++--------+------------------+------------+
+| emp_no | department       | dept_avg   |
++--------+------------------+------------+
+|     15 | customer service | 46571.4286 |
+|     16 | customer service | 46571.4286 |
+|     17 | customer service | 46571.4286 |
+|     18 | customer service | 46571.4286 |
+|     19 | customer service | 46571.4286 |
+|     42 | customer service | 46571.4286 |
+|     20 | customer service | 46571.4286 |
+|     21 | customer service | 46571.4286 |
+|     41 | customer service | 46571.4286 |
+|     40 | customer service | 46571.4286 |
+|     39 | customer service | 46571.4286 |
+|     38 | customer service | 46571.4286 |
+|     36 | customer service | 46571.4286 |
+|     37 | customer service | 46571.4286 |
+|      1 | engineering      | 81285.7143 |
+|      2 | engineering      | 81285.7143 |
+|      3 | engineering      | 81285.7143 |
+|      4 | engineering      | 81285.7143 |
+|      5 | engineering      | 81285.7143 |
+|      7 | engineering      | 81285.7143 |
+|     22 | engineering      | 81285.7143 |
+|      6 | engineering      | 81285.7143 |
+|     23 | engineering      | 81285.7143 |
+|     24 | engineering      | 81285.7143 |
+|     25 | engineering      | 81285.7143 |
+|     26 | engineering      | 81285.7143 |
+|     27 | engineering      | 81285.7143 |
+|     28 | engineering      | 81285.7143 |
+|      8 | sales            | 77428.5714 |
+|     30 | sales            | 77428.5714 |
+|     31 | sales            | 77428.5714 |
+|     14 | sales            | 77428.5714 |
+|     33 | sales            | 77428.5714 |
+|     34 | sales            | 77428.5714 |
+|     35 | sales            | 77428.5714 |
+|     13 | sales            | 77428.5714 |
+|     29 | sales            | 77428.5714 |
+|     12 | sales            | 77428.5714 |
+|     11 | sales            | 77428.5714 |
+|     10 | sales            | 77428.5714 |
+|      9 | sales            | 77428.5714 |
+|     32 | sales            | 77428.5714 |
++--------+------------------+------------+
+42 rows in set (0.00 sec)
+
+mysql>  SELECT emp_no,department, salary, avg(salary) over(partition by department) as dept_avg from employees;
++--------+------------------+--------+------------+
+| emp_no | department       | salary | dept_avg   |
++--------+------------------+--------+------------+
+|     15 | customer service |  38000 | 46571.4286 |
+|     16 | customer service |  45000 | 46571.4286 |
+|     17 | customer service |  61000 | 46571.4286 |
+|     18 | customer service |  40000 | 46571.4286 |
+|     19 | customer service |  31000 | 46571.4286 |
+|     42 | customer service |  55000 | 46571.4286 |
+|     20 | customer service |  56000 | 46571.4286 |
+|     21 | customer service |  55000 | 46571.4286 |
+|     41 | customer service |  56000 | 46571.4286 |
+|     40 | customer service |  31000 | 46571.4286 |
+|     39 | customer service |  40000 | 46571.4286 |
+|     38 | customer service |  61000 | 46571.4286 |
+|     36 | customer service |  38000 | 46571.4286 |
+|     37 | customer service |  45000 | 46571.4286 |
+|      1 | engineering      |  80000 | 81285.7143 |
+|      2 | engineering      |  69000 | 81285.7143 |
+|      3 | engineering      |  70000 | 81285.7143 |
+|      4 | engineering      | 103000 | 81285.7143 |
+|      5 | engineering      |  67000 | 81285.7143 |
+|      7 | engineering      |  91000 | 81285.7143 |
+|     22 | engineering      |  80000 | 81285.7143 |
+|      6 | engineering      |  89000 | 81285.7143 |
+|     23 | engineering      |  69000 | 81285.7143 |
+|     24 | engineering      |  70000 | 81285.7143 |
+|     25 | engineering      | 103000 | 81285.7143 |
+|     26 | engineering      |  67000 | 81285.7143 |
+|     27 | engineering      |  89000 | 81285.7143 |
+|     28 | engineering      |  91000 | 81285.7143 |
+|      8 | sales            |  59000 | 77428.5714 |
+|     30 | sales            |  70000 | 77428.5714 |
+|     31 | sales            | 159000 | 77428.5714 |
+|     14 | sales            |  61000 | 77428.5714 |
+|     33 | sales            |  60000 | 77428.5714 |
+|     34 | sales            |  61000 | 77428.5714 |
+|     35 | sales            |  61000 | 77428.5714 |
+|     13 | sales            |  61000 | 77428.5714 |
+|     29 | sales            |  59000 | 77428.5714 |
+|     12 | sales            |  60000 | 77428.5714 |
+|     11 | sales            |  72000 | 77428.5714 |
+|     10 | sales            | 159000 | 77428.5714 |
+|      9 | sales            |  70000 | 77428.5714 |
+|     32 | sales            |  72000 | 77428.5714 |
++--------+------------------+--------+------------+
+42 rows in set (0.00 sec)
+
+mysql> select * from employees;
++--------+------------------+--------+
+| emp_no | department       | salary |
++--------+------------------+--------+
+|      1 | engineering      |  80000 |
+|      2 | engineering      |  69000 |
+|      3 | engineering      |  70000 |
+|      4 | engineering      | 103000 |
+|      5 | engineering      |  67000 |
+|      6 | engineering      |  89000 |
+|      7 | engineering      |  91000 |
+|      8 | sales            |  59000 |
+|      9 | sales            |  70000 |
+|     10 | sales            | 159000 |
+|     11 | sales            |  72000 |
+|     12 | sales            |  60000 |
+|     13 | sales            |  61000 |
+|     14 | sales            |  61000 |
+|     15 | customer service |  38000 |
+|     16 | customer service |  45000 |
+|     17 | customer service |  61000 |
+|     18 | customer service |  40000 |
+|     19 | customer service |  31000 |
+|     20 | customer service |  56000 |
+|     21 | customer service |  55000 |
+|     22 | engineering      |  80000 |
+|     23 | engineering      |  69000 |
+|     24 | engineering      |  70000 |
+|     25 | engineering      | 103000 |
+|     26 | engineering      |  67000 |
+|     27 | engineering      |  89000 |
+|     28 | engineering      |  91000 |
+|     29 | sales            |  59000 |
+|     30 | sales            |  70000 |
+|     31 | sales            | 159000 |
+|     32 | sales            |  72000 |
+|     33 | sales            |  60000 |
+|     34 | sales            |  61000 |
+|     35 | sales            |  61000 |
+|     36 | customer service |  38000 |
+|     37 | customer service |  45000 |
+|     38 | customer service |  61000 |
+|     39 | customer service |  40000 |
+|     40 | customer service |  31000 |
+|     41 | customer service |  56000 |
+|     42 | customer service |  55000 |
++--------+------------------+--------+
+42 rows in set (0.00 sec)
+
+mysql> select department,salary,sum(salary) over(partition by department) from employees;
++------------------+--------+-------------------------------------------+
+| department       | salary | sum(salary) over(partition by department) |
++------------------+--------+-------------------------------------------+
+| customer service |  38000 |                                    652000 |
+| customer service |  45000 |                                    652000 |
+| customer service |  61000 |                                    652000 |
+| customer service |  40000 |                                    652000 |
+| customer service |  31000 |                                    652000 |
+| customer service |  55000 |                                    652000 |
+| customer service |  56000 |                                    652000 |
+| customer service |  55000 |                                    652000 |
+| customer service |  56000 |                                    652000 |
+| customer service |  31000 |                                    652000 |
+| customer service |  40000 |                                    652000 |
+| customer service |  61000 |                                    652000 |
+| customer service |  38000 |                                    652000 |
+| customer service |  45000 |                                    652000 |
+| engineering      |  80000 |                                   1138000 |
+| engineering      |  69000 |                                   1138000 |
+| engineering      |  70000 |                                   1138000 |
+| engineering      | 103000 |                                   1138000 |
+| engineering      |  67000 |                                   1138000 |
+| engineering      |  91000 |                                   1138000 |
+| engineering      |  80000 |                                   1138000 |
+| engineering      |  89000 |                                   1138000 |
+| engineering      |  69000 |                                   1138000 |
+| engineering      |  70000 |                                   1138000 |
+| engineering      | 103000 |                                   1138000 |
+| engineering      |  67000 |                                   1138000 |
+| engineering      |  89000 |                                   1138000 |
+| engineering      |  91000 |                                   1138000 |
+| sales            |  59000 |                                   1084000 |
+| sales            |  70000 |                                   1084000 |
+| sales            | 159000 |                                   1084000 |
+| sales            |  61000 |                                   1084000 |
+| sales            |  60000 |                                   1084000 |
+| sales            |  61000 |                                   1084000 |
+| sales            |  61000 |                                   1084000 |
+| sales            |  61000 |                                   1084000 |
+| sales            |  59000 |                                   1084000 |
+| sales            |  60000 |                                   1084000 |
+| sales            |  72000 |                                   1084000 |
+| sales            | 159000 |                                   1084000 |
+| sales            |  70000 |                                   1084000 |
+| sales            |  72000 |                                   1084000 |
++------------------+--------+-------------------------------------------+
+42 rows in set (0.00 sec)
+
+mysql> select department,salary,sum(salary) over(partition by department order by salary) from employees;
++------------------+--------+-----------------------------------------------------------+
+| department       | salary | sum(salary) over(partition by department order by salary) |
++------------------+--------+-----------------------------------------------------------+
+| customer service |  31000 |                                                     62000 |
+| customer service |  31000 |                                                     62000 |
+| customer service |  38000 |                                                    138000 |
+| customer service |  38000 |                                                    138000 |
+| customer service |  40000 |                                                    218000 |
+| customer service |  40000 |                                                    218000 |
+| customer service |  45000 |                                                    308000 |
+| customer service |  45000 |                                                    308000 |
+| customer service |  55000 |                                                    418000 |
+| customer service |  55000 |                                                    418000 |
+| customer service |  56000 |                                                    530000 |
+| customer service |  56000 |                                                    530000 |
+| customer service |  61000 |                                                    652000 |
+| customer service |  61000 |                                                    652000 |
+| engineering      |  67000 |                                                    134000 |
+| engineering      |  67000 |                                                    134000 |
+| engineering      |  69000 |                                                    272000 |
+| engineering      |  69000 |                                                    272000 |
+| engineering      |  70000 |                                                    412000 |
+| engineering      |  70000 |                                                    412000 |
+| engineering      |  80000 |                                                    572000 |
+| engineering      |  80000 |                                                    572000 |
+| engineering      |  89000 |                                                    750000 |
+| engineering      |  89000 |                                                    750000 |
+| engineering      |  91000 |                                                    932000 |
+| engineering      |  91000 |                                                    932000 |
+| engineering      | 103000 |                                                   1138000 |
+| engineering      | 103000 |                                                   1138000 |
+| sales            |  59000 |                                                    118000 |
+| sales            |  59000 |                                                    118000 |
+| sales            |  60000 |                                                    238000 |
+| sales            |  60000 |                                                    238000 |
+| sales            |  61000 |                                                    482000 |
+| sales            |  61000 |                                                    482000 |
+| sales            |  61000 |                                                    482000 |
+| sales            |  61000 |                                                    482000 |
+| sales            |  70000 |                                                    622000 |
+| sales            |  70000 |                                                    622000 |
+| sales            |  72000 |                                                    766000 |
+| sales            |  72000 |                                                    766000 |
+| sales            | 159000 |                                                   1084000 |
+| sales            | 159000 |                                                   1084000 |
++------------------+--------+-----------------------------------------------------------+
+42 rows in set (0.05 sec)
+
+mysql> select department,salary,sum(salary) over(partition by department order by salary) as roll_salary from employees;
++------------------+--------+-------------+
+| department       | salary | roll_salary |
++------------------+--------+-------------+
+| customer service |  31000 |       62000 |
+| customer service |  31000 |       62000 |
+| customer service |  38000 |      138000 |
+| customer service |  38000 |      138000 |
+| customer service |  40000 |      218000 |
+| customer service |  40000 |      218000 |
+| customer service |  45000 |      308000 |
+| customer service |  45000 |      308000 |
+| customer service |  55000 |      418000 |
+| customer service |  55000 |      418000 |
+| customer service |  56000 |      530000 |
+| customer service |  56000 |      530000 |
+| customer service |  61000 |      652000 |
+| customer service |  61000 |      652000 |
+| engineering      |  67000 |      134000 |
+| engineering      |  67000 |      134000 |
+| engineering      |  69000 |      272000 |
+| engineering      |  69000 |      272000 |
+| engineering      |  70000 |      412000 |
+| engineering      |  70000 |      412000 |
+| engineering      |  80000 |      572000 |
+| engineering      |  80000 |      572000 |
+| engineering      |  89000 |      750000 |
+| engineering      |  89000 |      750000 |
+| engineering      |  91000 |      932000 |
+| engineering      |  91000 |      932000 |
+| engineering      | 103000 |     1138000 |
+| engineering      | 103000 |     1138000 |
+| sales            |  59000 |      118000 |
+| sales            |  59000 |      118000 |
+| sales            |  60000 |      238000 |
+| sales            |  60000 |      238000 |
+| sales            |  61000 |      482000 |
+| sales            |  61000 |      482000 |
+| sales            |  61000 |      482000 |
+| sales            |  61000 |      482000 |
+| sales            |  70000 |      622000 |
+| sales            |  70000 |      622000 |
+| sales            |  72000 |      766000 |
+| sales            |  72000 |      766000 |
+| sales            | 159000 |     1084000 |
+| sales            | 159000 |     1084000 |
++------------------+--------+-------------+
+42 rows in set (0.00 sec)
+
+mysql> select department,salary,rank() sum(salary) over(partition by department order by salary) as roll_salary from employees order by department;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sum(salary) over(partition by department order by salary) as roll_salary from em' at line 1
+mysql> select department,salary,rank() over(partition by department order by salary) as roll_salary from employees order by department;
++------------------+--------+-------------+
+| department       | salary | roll_salary |
++------------------+--------+-------------+
+| customer service |  31000 |           1 |
+| customer service |  31000 |           1 |
+| customer service |  38000 |           3 |
+| customer service |  38000 |           3 |
+| customer service |  40000 |           5 |
+| customer service |  40000 |           5 |
+| customer service |  45000 |           7 |
+| customer service |  45000 |           7 |
+| customer service |  55000 |           9 |
+| customer service |  55000 |           9 |
+| customer service |  56000 |          11 |
+| customer service |  56000 |          11 |
+| customer service |  61000 |          13 |
+| customer service |  61000 |          13 |
+| engineering      |  67000 |           1 |
+| engineering      |  67000 |           1 |
+| engineering      |  69000 |           3 |
+| engineering      |  69000 |           3 |
+| engineering      |  70000 |           5 |
+| engineering      |  70000 |           5 |
+| engineering      |  80000 |           7 |
+| engineering      |  80000 |           7 |
+| engineering      |  89000 |           9 |
+| engineering      |  89000 |           9 |
+| engineering      |  91000 |          11 |
+| engineering      |  91000 |          11 |
+| engineering      | 103000 |          13 |
+| engineering      | 103000 |          13 |
+| sales            |  59000 |           1 |
+| sales            |  59000 |           1 |
+| sales            |  60000 |           3 |
+| sales            |  60000 |           3 |
+| sales            |  61000 |           5 |
+| sales            |  61000 |           5 |
+| sales            |  61000 |           5 |
+| sales            |  61000 |           5 |
+| sales            |  70000 |           9 |
+| sales            |  70000 |           9 |
+| sales            |  72000 |          11 |
+| sales            |  72000 |          11 |
+| sales            | 159000 |          13 |
+| sales            | 159000 |          13 |
++------------------+--------+-------------+
+42 rows in set (0.04 sec)
+
+mysql> select * from employees;
++--------+------------------+--------+
+| emp_no | department       | salary |
++--------+------------------+--------+
+|      1 | engineering      |  80000 |
+|      2 | engineering      |  69000 |
+|      3 | engineering      |  70000 |
+|      4 | engineering      | 103000 |
+|      5 | engineering      |  67000 |
+|      6 | engineering      |  89000 |
+|      7 | engineering      |  91000 |
+|      8 | sales            |  59000 |
+|      9 | sales            |  70000 |
+|     10 | sales            | 159000 |
+|     11 | sales            |  72000 |
+|     12 | sales            |  60000 |
+|     13 | sales            |  61000 |
+|     14 | sales            |  61000 |
+|     15 | customer service |  38000 |
+|     16 | customer service |  45000 |
+|     17 | customer service |  61000 |
+|     18 | customer service |  40000 |
+|     19 | customer service |  31000 |
+|     20 | customer service |  56000 |
+|     21 | customer service |  55000 |
+|     22 | engineering      |  80000 |
+|     23 | engineering      |  69000 |
+|     24 | engineering      |  70000 |
+|     25 | engineering      | 103000 |
+|     26 | engineering      |  67000 |
+|     27 | engineering      |  89000 |
+|     28 | engineering      |  91000 |
+|     29 | sales            |  59000 |
+|     30 | sales            |  70000 |
+|     31 | sales            | 159000 |
+|     32 | sales            |  72000 |
+|     33 | sales            |  60000 |
+|     34 | sales            |  61000 |
+|     35 | sales            |  61000 |
+|     36 | customer service |  38000 |
+|     37 | customer service |  45000 |
+|     38 | customer service |  61000 |
+|     39 | customer service |  40000 |
+|     40 | customer service |  31000 |
+|     41 | customer service |  56000 |
+|     42 | customer service |  55000 |
++--------+------------------+--------+
+42 rows in set (0.00 sec)
+
+mysql>
 ```
